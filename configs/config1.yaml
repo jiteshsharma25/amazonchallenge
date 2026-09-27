@@ -1,0 +1,41 @@
+# configs/config.yaml
+
+project:
+  seed: 42
+  num_workers: 6
+
+data:
+  train_dir: "dataset/train"
+  test_dir: "dataset/test"
+  output_dir: "output"
+  model_dir: "models"
+  
+blocking:
+  tfidf_ngram_range: [2, 4]
+  top_k_neighbors: 8             # Fixed key matching train.py
+  top_k_name_neighbors: 8
+  top_k_address_neighbors: 3
+  similarity_threshold: 0.25
+
+sampling:
+  train_s1_sample_size: 50000   # Samples 50k S1 entities (~400k candidate pairs) for training
+
+features:
+  use_name_features: true
+  use_address_features: true
+  use_country_features: true
+
+model:
+  type: "lightgbm"
+  params:
+    objective: "binary"
+    metric: "binary_logloss"
+    boosting_type: "gbdt"
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: 7
+    feature_fraction: 0.8
+    is_unbalance: true
+    num_threads: 6
+  n_estimators: 300
+  early_stopping_rounds: 30
