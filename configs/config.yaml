@@ -1,0 +1,41 @@
+# configs/config.yaml
+
+project:
+  seed: 42
+  num_workers: -1  # Use all available CPU cores
+
+data:
+  train_dir: "dataset/train"
+  test_dir: "dataset/test"
+  output_dir: "output"
+  model_dir: "models"
+  
+blocking:
+  tfidf_ngram_range: [2, 4]
+  top_k_name_neighbors: 15
+  top_k_address_neighbors: 5
+  similarity_threshold: 0.3  # Minimum cosine sim to keep a candidate
+
+features:
+  use_name_features: true
+  use_address_features: true
+  use_country_features: true
+
+model:
+  type: "lightgbm"
+  params:
+    objective: "binary"
+    metric: "binary_logloss"
+    boosting_type: "gbdt"
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: 7
+    feature_fraction: 0.8
+    is_unbalance: true  # Handles the massive negative class (hard negatives)
+  n_estimators: 500
+  early_stopping_rounds: 50
+
+thresholding:
+  search_space: [0.1, 0.9]
+  search_steps: 100
+  optimize_for: "f0.5"
